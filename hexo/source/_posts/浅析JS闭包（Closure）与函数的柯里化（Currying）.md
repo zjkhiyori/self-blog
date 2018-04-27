@@ -1,14 +1,16 @@
 ---
 title: 浅析JS闭包（Closure）与函数的柯里化（Currying）
 date: 2018-04-26 15:55:57
+categories:
+  - 技术
 tags:
+  - JavaScript
 ---
 
-先上版图
-![塞尔达 荒野之息](http://upload-images.jianshu.io/upload_images/4730298-bf07a7b877e5cece.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-```
-//3月3号老任就要发售Switch了，还有塞尔达护航新作，然而我并没有钱买...
-```
+ ![3月3号老任就要发售Switch了，还有塞尔达护航新作，然而我并没有钱买...](http://upload-images.jianshu.io/upload_images/4730298-bf07a7b877e5cece.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+<!-- more -->
+
 ## JS闭包
 闭包在程序界是一个很抽象的概念，以至于被人称为编程界的哈姆雷特，我们先来看看MDN对其的解释
 >Closures are functions that refer to independent (free) variables (variables that are used locally, but defined in an enclosing scope). In other words, these functions 'remember' the environment in which they were created.
