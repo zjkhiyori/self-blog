@@ -3,11 +3,11 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
-keywords:
-author: John Doe
+title: Read the fucking source code
+subtitle: Android/React Native
+description: 不定时更新技术，游戏，阿尼妹脱
+keywords: React Native
+author: Yori Zhao
 language:
 timezone:
 
@@ -41,7 +41,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
   
 # Home page setting
@@ -81,4 +81,4 @@ deploy:
   type: git
   repo: git@github.com:zjkhiyori/zjkhiyori.github.io.git
   branch: master
-  message: 'hello world'
+  message: 'update'
