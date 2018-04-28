@@ -32,23 +32,23 @@ github的issue有FlatList不显示的问题，表现的跟我不太一样，他�
 
 ![render函数](https://upload-images.jianshu.io/upload_images/4730298-8aee73f45bf505e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-通过配置`legacyImplementation`来选择使用`MetroListView`或者`VirtualizedList`前者是老的ListView，后者就是替代老ListView的新列表组件，官方解释这个变量是用来比较性能的，一般用不着，着重看看`VirtualizedList `，view出了问题首先就看看`renderItem`方法
+通过配置`legacyImplementation`来选择使用`MetroListView`或者`VirtualizedList`前者是老的ListView，后者就是替代老ListView的新列表组件，官方解释这个变量是用来比较性能的，一般用不着，着重看看`VirtualizedList `，view出了问题首先就看看`renderItem`方法，下图为`VirtualizedList`的`renderItem`方法
 
 ![VirtualizedList的renderItem方法](https://upload-images.jianshu.io/upload_images/4730298-eb0687b8e78b93c0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-这里就只是区分了多栏与单栏列表，我的使用场景是单栏列表，这行代码就只是给FlatList使用者回传了一个info参数，再看看info参数具体，找到`VirtualizedList`的代码，再找`renderItem`这个props在哪里调用的，
+这里就只是区分了多栏与单栏列表，我的使用场景是单栏列表，这行代码就只是给FlatList使用者回传了一个info参数，再看看info参数具体，找到`VirtualizedList`的代码，再找`renderItem`这个props在哪里调用的，下图为`CellRenderer的render`方法里`renderItem`回传参数
 
 ![CellRenderer的render方法里renderItem回传参数](https://upload-images.jianshu.io/upload_images/4730298-24d4fac0c56e442f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-可以看到是在`CellRenderer`这个组件的render方法里调用的，传入了`item，index，separators`，我们要找的就是item，但是item是从props中拿到的，再找找`CellRenderer`在哪里使用，可以看到是在`_pushCells`方法中使用，`_pushCells`方法在`VirtualizedList `的render方法中调用，
+可以看到是在`CellRenderer`这个组件的render方法里调用的，传入了`item，index，separators`，我们要找的就是item，但是item是从props中拿到的，再找找`CellRenderer`在哪里使用，可以看到是在`_pushCells`方法中使用，`_pushCells`方法在`VirtualizedList `的render方法中调用，下图为`VirtualizedList`的`render`方法
 
 ![VirtualizedList的render方法](https://upload-images.jianshu.io/upload_images/4730298-c129e421ac78c6a7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-cells作为`React.cloneElement(element,[props],[...children])`的第三参数，如上图代码，此时基本可以确定问题应该在这个`cells`参数上了，再回头看看`_pushCells `方法
+cells作为`React.cloneElement(element,[props],[...children])`的第三参数，如上图代码，此时基本可以确定问题应该在这个`cells`参数上了，再回头看看`_pushCells `方法，下图为`VirtualizedList`的`_pushCells`方法
 
 ![VirtualizedList的_pushCells方法](https://upload-images.jianshu.io/upload_images/4730298-f17d8aba21012b3f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-可以看到item数据是来自props的`getItem`方法，这个方法传入了一个data和一个ii下标，顾名思义应该就是在取单个列表的渲染数据，这个data就是FlatList的data，我们的列表数据源，再回到调用方FlatList找到`getItem `方法
+可以看到item数据是来自props的`getItem`方法，这个方法传入了一个data和一个ii下标，顾名思义应该就是在取单个列表的渲染数据，这个data就是FlatList的data，我们的列表数据源，再回到调用方FlatList找到`getItem `方法，下图为`FlatList`的`getItem`方法
 
 ![FlatList的getItem方法](https://upload-images.jianshu.io/upload_images/4730298-5b20cb33eee3fd3d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 

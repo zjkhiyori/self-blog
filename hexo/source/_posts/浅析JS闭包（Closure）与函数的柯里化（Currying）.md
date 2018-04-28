@@ -7,7 +7,7 @@ tags:
   - JavaScript
 ---
 
- ![3月3号老任就要发售Switch了，还有塞尔达护航新作，然而我并没有钱买...](http://upload-images.jianshu.io/upload_images/4730298-bf07a7b877e5cece.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+ {% asset_img title_background.jpg 3月3号老任就要发售Switch了，还有塞尔达护航新作，然而我并没有钱买... %}
 
 <!-- more -->
 
