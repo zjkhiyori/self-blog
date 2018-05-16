@@ -18,7 +18,7 @@ DeltaPatcher.js:58 Uncaught (in promise) Error: DeltaPatcher should receive a fr
                                                        at deltaUrlToBlobUrl (deltaUrlToBlobUrl.js:34)
                                                        at <anonymous>
 ```
-想再次debug就得杀掉进程重新打开，官方解释在0.55版本会修复此问题，看了下pr改动都是js代码，随即更新版本修复此问题。若想以后碰到类似框架性的问题，自己能有排错纠错能力，还是老老实实啃源码吧
+想再次debug就得杀掉进程重新打开，官方解释在0.55版本会修复此问题，看了下pr改动都是js代码，随即更新版本修复此问题。若想以后碰到类似框架性的问题，想要自己能有排错纠错能力，还是老老实实啃源码吧
 
 <!-- more -->
 
@@ -531,4 +531,60 @@ public void connect(String url, JSDebuggerCallback callback) {
     mHttpClient.newWebSocket(request, this);
   }
 ```
-这里还是使用okhttp来和本地服务器进行长连接
+这里是使用okhttp来和本地服务器进行长连接，建立起连接后可以看到`JSDebuggerWebSocketClient`里`onMessage`，`sendMessage`方法与服务器通信的逻辑。这里我们先回到`reloadJSInProxyMode`方法，跟到`onReloadWithJSDebugger`方法
+```
+private void onReloadWithJSDebugger(JavaJSExecutor.Factory jsExecutorFactory) {
+    Log.d(ReactConstants.TAG, "ReactInstanceManager.onReloadWithJSDebugger()");
+    recreateReactContextInBackground(
+        new ProxyJavaScriptExecutor.Factory(jsExecutorFactory),
+        JSBundleLoader.createRemoteDebuggerBundleLoader(
+            mDevSupportManager.getJSBundleURLForRemoteDebugging(),
+            mDevSupportManager.getSourceUrl()));
+  }
+```
+这里逻辑与普通debug模式差不多，都是构造`JSBundleLoader`和`JavaScriptExecutorFactory`，跟到`createRemoteDebuggerBundleLoader`方法中
+### createRemoteDebuggerBundleLoader
+```
+/**
+   * This loader is used when proxy debugging is enabled. In that case there is no point in fetching
+   * the bundle from device as remote executor will have to do it anyway.
+   */
+  public static JSBundleLoader createRemoteDebuggerBundleLoader(
+      final String proxySourceURL,
+      final String realSourceURL) {
+    return new JSBundleLoader() {
+      @Override
+      public String loadScript(CatalystInstanceImpl instance) {
+        instance.setSourceURLs(realSourceURL, proxySourceURL);
+        return realSourceURL;
+      }
+    };
+  }
+
+ /**
+   * This API is used in situations where the JS bundle is being executed not on
+   * the device, but on a host machine. In that case, we must provide two source
+   * URLs for the JS bundle: One to be used on the device, and one to be used on
+   * the remote debugging machine.
+   *
+   * @param deviceURL A source URL that is accessible from this device.
+   * @param remoteURL A source URL that is accessible from the remote machine
+   * executing the JS.
+   */
+  /* package */ void setSourceURLs(String deviceURL, String remoteURL) {
+    mSourceURL = deviceURL;
+    jniSetSourceURL(remoteURL);
+  }
+```
+可以从注释中看出，此时jsbundle也是从本地服务器下载的
+
+跳出逻辑看看JSBundleLoader，暴露了四个方法
+ * `createAssetLoader` 从asset目录中创建loader
+ * `createFileLoader` 从具体某个文件中创建loader
+ * `createCachedBundleFromNetworkLoader` 从URL中加载
+ * `createRemoteDebuggerBundleLoader` 同上
+
+ 所以加载JSBundle可以归类为以上三种方式
+
+## finally
+开头的问题是js层面的，好像跟我分析的Java层并没什么卵关系。。
