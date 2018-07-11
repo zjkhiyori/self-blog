@@ -587,4 +587,4 @@ private void onReloadWithJSDebugger(JavaJSExecutor.Factory jsExecutorFactory) {
  所以加载JSBundle可以归类为以上三种方式
 
 ## finally
-开头的问题是js层面的，好像跟我分析的Java层并没什么卵关系。。
+开头的问题是js层面的，好像跟我分析的Java层并没什么卵关系。。但是读一读源码，总归没有坏处
