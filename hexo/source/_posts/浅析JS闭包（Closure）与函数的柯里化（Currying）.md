@@ -105,7 +105,38 @@ for (var i = 0; i < 10; i++) {
 这里的代码将每次循环的i值传给了一个闭包函数，此时这个闭包函数记忆了这个i的值，等到执行定时函数时，就可以正常打印出i值。
 >参考文档https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
 
+## 函数的柯里化
+### 什么是柯里化
+简单来说就是参数消元，比如我有以下代码
 ```
-//未完待续，懒癌犯了剩下的下次补...
-//接下来是每周最开心的游戏时间，仁王继续落命中...
+add = (x, y, z) => x + y + z
 ```
+我们可以将它进行柯里化
+```
+add = x => y => z => x + y + z
+```
+### 柯里化的作用
+柯里化后的函数有个特点就是返回了一个新的函数，我们又可以对这个新的函数进行配置然后得到另一个新的函数，可以类比为函数的"预加载"功能，有了这个功能我们可以对通用代码进行一些封装，比如封装一个简单的请求
+```
+const requestFunc = headers => method => url => body => fetch(url, {
+  method,
+  headers,
+  body,
+});
+
+const request = requestFunc({
+  'content-Type': 'multipart/form-data',
+  ...params,
+});
+
+const postRequest = request('POST');
+const getRequest = request('GET');
+const loginRequest = postRequest('https://host/package/login');
+const getInfoRequest = getRequest('https://host/package/user/info')
+// do login
+loginRequest({ name: 'Tom', password: '123456' }).then(response => {});
+
+// get info
+getInfoRequest().then(response => {})'
+```
+当然，还有其他的精彩应用场景，比如使用这种特性来进行逻辑解耦和中间件的配置，Redux的源码也使用了大量柯里化函数，比如applyMiddleWare就是传入一个柯里化函数作为中间件，来获取内部状态信息。有兴趣的可以去细细品味
