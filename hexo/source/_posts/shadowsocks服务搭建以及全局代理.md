@@ -4,8 +4,7 @@ date: 2018-11-13 15:40:10
 categories:
   - 技术
 tags:
-  - React Native
-  - Android
+  - extra
 ---
 
 {% asset_img title.jpeg %}
