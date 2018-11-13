@@ -8,6 +8,7 @@ tags:
   - Android
 ---
 
+{% asset_img title.jpeg %}
 最近又有一台服务器被GFW给干掉了，又得掏腰包买服务器跟搭建环境了，这次记录一下方便以后翻出来看吧
 
 <!-- more -->
