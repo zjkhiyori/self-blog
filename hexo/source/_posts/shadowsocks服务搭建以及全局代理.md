@@ -28,6 +28,13 @@ tags:
 我一般都是用Ubuntu，这里以Ubuntu为例
 ```
 apt-get install python-pip
+// 如果有 E: Unable to locate package python-pip 错误
+// 执行一下 sudo apt-get update 再install
+
+// 安装git
+sudo apt-get install git
+
+// 安装ss基础包
 pip install git+https://github.com/shadowsocks/shadowsocks.git@master
 ```
 安装好了键入
