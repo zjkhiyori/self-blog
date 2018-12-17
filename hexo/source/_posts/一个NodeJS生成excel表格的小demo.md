@@ -22,6 +22,7 @@ tags:
 }
 
 ```
+<!-- more -->
 node版本建议不要太低，低版本对es6的兼容性不好，我这里使用的是8.9.0
 
 然后安装babel
@@ -63,7 +64,7 @@ es6环境就ok了
 yarn add excel-export
 ```
 
-使用方法我这里也只是简单用一下基本功能
+使用方法我这里也只是简单用一下基本功能，高级用法还是直接看该库的文档
 
 ```
 const conf = {};
@@ -80,6 +81,12 @@ conf.cols = [{
 
 // 定义row的数据
 conf.rows = ['Tom', "String"];
+// execute方法生成文件源数据
+const result = nodeExcel.execute(conf);
+// fs将文件写到内存
+fs.writeFile(`${__dirname}/test.xlsx`, result, 'binary', (err) => {
+  err ? console.log(err) : null;
+});
 ```
 
-<!-- more -->
+Demo的代码地址[ExcelGenerator](https://github.com/zjkhiyori/ExcelGenerator)
