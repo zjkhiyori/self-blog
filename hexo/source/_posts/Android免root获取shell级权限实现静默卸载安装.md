@@ -463,7 +463,13 @@ public class MainActivity extends AppCompatActivity {
 代码相关的工作基本完工，一个简单的，实现了静默卸载Demo就完成了
 
 ### 打包测试
-重复开头的操作进行打包以及提取.dex文件，然后通过app_process启动服务，运行App输入包名，就可以随意卸载任意App
+ * ./gradlew assembleRelease 打出apk
+ * 后缀改成.rar解压出classes.dex
+ * 将classes.dex push至`/data/local/tmp/`
+ * 执行服务
+    * 前台执行：`adb shell app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin shellService.Main`，拔掉数据线会终止服务
+    * 后台执行：`adb shell nohup app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin --nice-name=${serviceName} shellService.Main`，会一直运行除非手动kill pid或者重启设备
+ * 安装apk，输入要卸载的包名，点击UNINSTALL进行静默卸载
 
 ## 完整项目
 [https://github.com/zjkhiyori/hack-root](https://github.com/zjkhiyori/hack-root) 欢迎fork || star
