@@ -467,8 +467,16 @@ public class MainActivity extends AppCompatActivity {
  * 后缀改成.rar解压出classes.dex
  * 将classes.dex push至`/data/local/tmp/`
  * 执行服务
-    * 前台执行：`adb shell app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin shellService.Main`，拔掉数据线会终止服务
-    * 后台执行：`adb shell nohup app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin --nice-name=${serviceName} shellService.Main`，会一直运行除非手动kill pid或者重启设备
+    * 前台执行：
+    ```
+    // 拔掉数据线会终止服务
+    adb shell app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin shellService.Main
+    ```
+    * 后台执行：
+    ```
+    // 会一直运行除非手动kill pid或者重启设备
+    adb shell nohup app_process -Djava.class.path=/data/local/tmp/classes.dex /system/bin --nice-name=${serviceName} shellService.Main
+    ```
  * 安装apk，输入要卸载的包名，点击UNINSTALL进行静默卸载
 
 ## 完整项目
