@@ -77,7 +77,7 @@ nonvoluntary_ctxt_switches:	76
 ```
 可以看到Uid，Gid为2000，就是shell的Uid
 
-## 开始吧
+## 开始吧(本方案也需开启调试模式)
 分析了app_process的可行性，我们可以给出一个方案，通过app_process启动一个socket服务，然后让我们的App与该服务通信，来代理App做一些~~见不得人~~需要shell级权限的事情，比如静默卸载，安装，全局广播等等
 
 ### 新建工程
