@@ -110,7 +110,7 @@ module.exports = createModuleIdFactory;
 
 通过阅读源码，我们可以发现，只要隔离了包下载的路径以及每个包自己的状态信息文件，然后对多包并发更新时，做一些同步处理，就可以做到多包独立更新
 
-![](https://user-gold-cdn.xitu.io/2019/9/29/16d7c673afd6d353?w=477&h=263&f=png&s=28264)
+{% asset_img sample.jpg %}
 改造后的包存放路径如上图所示
 
 app.json文件存放包的信息，由检测更新的接口返回以及本地逻辑写入的一些信息，比如hash值，下载url，更新包的版本号，bundle的相对路径(本地代码写入)等等
