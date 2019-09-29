@@ -38,7 +38,7 @@ tags:
 
 这个项目较为完整，简要配置下就可以直接使用，所以js端拆包主要参考自这个项目，通过配置Metro的createModuleIdFactory，processModuleFilter回调，我们可以很容易的自定义生成moduleId，以及筛选基础包内容，来达到基础业务包分离的目的，因为实际上拆分jsbundle主要工作也就在于moduleId分配以及打包filter配置，我们可以观察下打包后的js代码结构
 
-通过`react-native bundle --platform android --dev false --entry-file index.common.js --bundle-output ./CodePush/common.android.bundle.js --assets-dest ./CodePush --config common.bundle.js --minify false`指令打出基础包（注意minify要设为false）
+通过`react-native bundle --platform android --dev false --entry-file index.common.js --bundle-output ./CodePush/common.android.bundle.js --assets-dest ./CodePush --config common.bundle.js --minify false`指令打出基础包（minify设为false便于查看打包后源码）
 
 ```
 function (global) {
